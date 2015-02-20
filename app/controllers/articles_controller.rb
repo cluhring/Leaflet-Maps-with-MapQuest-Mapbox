@@ -1,11 +1,8 @@
 class ArticlesController < ApplicationController
 
   def index
-    @articles = Article.all
+    # @map_address = params.fetch(:address)
   end
 
-  def show
-    @article = Article.find(params[:id])
-  end
 
 end
