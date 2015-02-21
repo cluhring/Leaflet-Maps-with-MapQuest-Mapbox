@@ -11,13 +11,31 @@
 <div id='map'></div>
 <script>
 L.mapbox.accessToken = '<%= Rails.application.secrets.mapbox_token %>';
-var map = L.mapbox.map('map', 'cluhring.l1b0862b')
+var map = L.mapbox.map('map', 'cluhring.l9a9kd92');
+
+map.locate({setView: true, maxZoom: 16});
+
+map.on('locationfound', onLocationFound);
+
+function onLocationFound(e) {
+  var radius = e.accuracy / 2;
+
+  L.marker(e.latlng).addTo(map)
+  .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+  L.circle(e.latlng, radius).addTo(map);
+}
+function onLocationError(e) {
+  alert(e.message);
+}
+
+map.on('locationerror', onLocationError);
 
 var turingIcon = L.icon({
   iconUrl: 'https://pbs.twimg.com/profile_images/444146105312243712/EHdy1GyV_400x400.png',
 
   iconSize:     [64, 64], // size of the icon
-  popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
 });
 L.marker([39.749747, -104.999977], {icon: turingIcon}).addTo(map).bindPopup("Turing School of Software and Design<br>1510 Blake Street, Denver, CO 80202");
 
@@ -25,7 +43,7 @@ var scottIcon = L.icon({
   iconUrl: 'https://scontent.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/10155510_10204458136868133_2678102298998605784_n.jpg?oh=1b229d0033f64ab07645de7a59ecc41c&oe=5582A623',
 
   iconSize:     [64, 64], // size of the icon
-  popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
 });
-L.marker([39.781, -105.078], {icon: scottIcon}).addTo(map).bindPopup("I'm Famous,<br> in Lightning Talks!");
+L.marker([39.781, -105.078], {icon: scottIcon}).addTo(map).bindPopup("Still famous in Lightning Talks!");
 </script>
