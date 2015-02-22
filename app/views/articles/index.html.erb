@@ -94,9 +94,34 @@ window.onload = function() {
 }
 
 </script><br>
-<button onclick="showDirections();">Show Directions</button>
-<div id='route-narrative' style='margin-top:20px;'></div>
+<button id="show-directions">Show Directions</button>
+<div id='route-narrative' class="hide" style='margin-top:20px;'></div>
 
+<script charset="utf-8">
+  $(document).ready(function(){
+    var toggleDirections = function() {
+      $("#show-directions").on("click", function(){
+        $("#route-narrative").toggleClass("hide")
+
+        toggleButtonText()
+      })
+    }
+
+    var toggleButtonText = function() {
+      if($("#show-directions").text() === "Show Directions") {
+        addText("Hide Directions")
+      } else {
+        addText("Show Directions")
+      }
+    }
+
+    var addText = function(text) {
+      $("#show-directions").text(text)
+    }
+
+    toggleDirections()
+  })
+</script>
 <!-- http://leafletjs.com/examples/mobile.html -->
 <!-- http://developer.mapquest.com/content/documentation/sdk/leaflet/v1.0/samples/routing_narrative_try.html -->
 <!-- Fmjtd%7Cluu8210a29%2Crn%3Do5-94bwl6  -->
