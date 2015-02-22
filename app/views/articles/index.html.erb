@@ -1,4 +1,4 @@
-<h1>Mapping with Leaflet & Mapbox</h1>
+<h1>Mapping with Leaflet & MapQuest</h1>
 
 <div id="address">
   <%= form_tag("/articles", method: "get") do %>
@@ -9,14 +9,15 @@
 </div>
 
 <div id='map'></div>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="http://www.mapquestapi.com/sdk/leaflet/v1.s/mq-map.js?key=Kmjtd%7Cluua2qu7n9%2C7a%3Do5-lzbgq"></script>
+<script src="http://www.mapquestapi.com/sdk/leaflet/v1.s/mq-routing.js?key=Kmjtd%7Cluua2qu7n9%2C7a%3Do5-lzbgq"></script>
 <script type="text/javascript">
 
 window.onload = function() {
   var map,
   dir;
-
-  // map.locate({setView: true, maxZoom: 16});
-
 
   map = L.map('map', {
     layers: MQ.mapLayer(),
@@ -42,9 +43,28 @@ window.onload = function() {
       L.DomUtil.get('route-narrative').innerHTML = html;
     }
   });
+  map.locate({setView: false, maxZoom: 16});
+
+  function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+
+    L.marker(e.latlng).addTo(map)
+    .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+  }
+
+  map.on('locationfound', onLocationFound);
+
+  function onLocationError(e) {
+    alert(e.message);
+  };
+
+  map.on('locationerror', onLocationError);
 
   dir.route({
     locations: [
+
     // "<%= @map_address %>"
     { latLng: { lat: 39.781, lng: -105.078 }},
     '1510 Blake Street, Denver, CO 80202'
@@ -72,6 +92,11 @@ window.onload = function() {
   });
   L.marker([39.749747, -104.999977], {icon: turingIcon}).addTo(map).bindPopup("Turing School of Software and Design<br>1510 Blake Street, Denver, CO 80202");
 }
+
 </script><br>
 <button onclick="showDirections();">Show Directions</button>
 <div id='route-narrative' style='margin-top:20px;'></div>
+
+<!-- http://leafletjs.com/examples/mobile.html -->
+<!-- http://developer.mapquest.com/content/documentation/sdk/leaflet/v1.0/samples/routing_narrative_try.html -->
+<!-- Fmjtd%7Cluu8210a29%2Crn%3Do5-94bwl6  -->
