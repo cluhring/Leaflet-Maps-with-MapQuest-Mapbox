@@ -1,12 +1,12 @@
 <h1>Mapping with Leaflet & MapQuest</h1>
 
-<div id="address">
+<!-- <div id="address">
   <%= form_tag("/articles", method: "get") do %>
   <%= label_tag("Enter your address to add a pin on the map") %>
   <%= text_field_tag(:map_address, "address") %>
   <%= submit_tag("Submit") %>
   <% end %>
-</div>
+</div> -->
 
 <div id='map'></div>
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -47,11 +47,21 @@ window.onload = function() {
 
   function onLocationFound(e) {
     var radius = e.accuracy / 2;
-
     L.marker(e.latlng).addTo(map)
     .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
     L.circle(e.latlng, radius).addTo(map);
+  dir.route({
+    locations: [
+    { latLng: { lat: e.latlng.lat, lng: e.latlng.lng}},
+    { latLng: { lat: 39.781, lng: -105.078 }},
+    ]
+  });
+
+  map.addLayer(MQ.routing.routeLayer({
+    directions: dir,
+    fitBounds: true
+  }));
   }
 
   map.on('locationfound', onLocationFound);
@@ -62,35 +72,21 @@ window.onload = function() {
 
   map.on('locationerror', onLocationError);
 
-  dir.route({
-    locations: [
-
-    // "<%= @map_address %>"
-    { latLng: { lat: 39.781, lng: -105.078 }},
-    '1510 Blake Street, Denver, CO 80202'
-    ]
-  });
-
-  map.addLayer(MQ.routing.routeLayer({
-    directions: dir,
-    fitBounds: true
-  }));
-
-  var scottIcon = L.icon({
-    iconUrl: 'https://scontent.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/10155510_10204458136868133_2678102298998605784_n.jpg?oh=1b229d0033f64ab07645de7a59ecc41c&oe=5582A623',
-
-    iconSize:     [64, 64], // size of the icon
-    popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
-  });
-  L.marker([39.781, -105.078], {icon: scottIcon}).addTo(map).bindPopup("Still famous in Lightning Talks!");
-
-  var turingIcon = L.icon({
-    iconUrl: 'https://pbs.twimg.com/profile_images/444146105312243712/EHdy1GyV_400x400.png',
-
-    iconSize:     [64, 64], // size of the icon
-    popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
-  });
-  L.marker([39.749747, -104.999977], {icon: turingIcon}).addTo(map).bindPopup("Turing School of Software and Design<br>1510 Blake Street, Denver, CO 80202");
+  // var scottIcon = L.icon({
+  //   iconUrl: 'https://scontent.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/10155510_10204458136868133_2678102298998605784_n.jpg?oh=1b229d0033f64ab07645de7a59ecc41c&oe=5582A623',
+  //
+  //   iconSize:     [64, 64], // size of the icon
+  //   popupAnchor:  [0, -76] // point from which the popup should open relative to the iconAnchor
+  // });
+  // L.marker([39.781, -105.078], {icon: scottIcon}).addTo(map).bindPopup("Still famous in Lightning Talks!");
+  //
+  // var turingIcon = L.icon({
+  //   iconUrl: 'https://pbs.twimg.com/profile_images/444146105312243712/EHdy1GyV_400x400.png',
+  //
+  //   iconSize:     [64, 64], // size of the icon
+  //   popupAnchor:  [0, -40] // point from which the popup should open relative to the iconAnchor
+  // });
+  // L.marker([39.749747, -104.999977], {icon: turingIcon}).addTo(map).bindPopup("Turing School of Software and Design<br>1510 Blake Street, Denver, CO 80202");
 }
 
 </script><br>
@@ -121,6 +117,7 @@ window.onload = function() {
 
     toggleDirections()
   })
+  alert(onLocationFound(document));
 </script>
 <!-- http://leafletjs.com/examples/mobile.html -->
 <!-- http://developer.mapquest.com/content/documentation/sdk/leaflet/v1.0/samples/routing_narrative_try.html -->
