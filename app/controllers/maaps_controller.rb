@@ -1,0 +1,2 @@
+class MaapsController < ApplicationController
+end
