@@ -11,8 +11,7 @@
 <div id='map'></div>
 <script>
 L.mapbox.accessToken = '<%= Rails.application.secrets.mapbox_token %>';
-var map = L.mapbox.map('map', 'cluhring.l1b0862b')
-
+var map = L.mapbox.map('map', 'cluhring.l1b0862b');
 map.locate({setView: true, maxZoom: 16});
 
 function onLocationFound(e) {
@@ -32,7 +31,80 @@ function onLocationError(e) {
 
 map.on('locationerror', onLocationError);
 
-function onEachFeature(feature, layer) {
+var denvers = new L.LayerGroup();
+  L.marker([39.674216, -104.924942]).bindPopup("Lydia's House").addTo(denvers),
+  L.marker([39.6710978, -105.107292]).bindPopup('House on Haunted Hill').addTo(denvers),
+  L.marker([39.7934098, -104.863788]).bindPopup('Denver B&B').addTo(denvers);
+  L.marker([39.7234098, -104.963788]).bindPopup('Denver Love Shack').addTo(denvers);
+  L.marker([39.68234098, -104.503788]).bindPopup('Denver Mountain Retreat').addTo(denvers);
+
+var newyorks = new L.LayerGroup();
+  L.marker([40.624944, -74.131798]).bindPopup('Brooklyn, Brookly, we go hard').addTo(newyorks),
+  L.marker([40.7161323, -73.987091]).bindPopup('Manhattan Apt').addTo(newyorks),
+  L.marker([40.7771743, -73.959137]).bindPopup('Big Apple Apt').addTo(newyorks);
+
+var seattles = new L.LayerGroup();
+  L.marker([47.614519, -122.326798]).bindPopup('Rain City, USA Condo').addTo(seattles),
+  L.marker([47.631634, -122.36908]).bindPopup('Pikes Place Market Bungalo').addTo(seattles),
+  L.marker([47.5822069, -122.400668]).bindPopup('Mt Rainier Cabin').addTo(seattles);
+
+var sanfranciscos = new L.LayerGroup();
+  L.marker([37.7702676, -122.423866]).bindPopup('Haight-Ashbury Hostel').addTo(sanfranciscos),
+  L.marker([37.7638552, -122.403458]).bindPopup('Golden Gate Escape').addTo(sanfranciscos),
+  L.marker([37.738628, -122.47216]).bindPopup('Full House').addTo(sanfranciscos);
+
+var washingtons = new L.LayerGroup();
+  L.marker([38.9149646, -77.095848]).bindPopup('Condo on the Mall').addTo(washingtons),
+  L.marker([38.9082124, -77.045082]).bindPopup('Capital Hill House').addTo(washingtons),
+  L.marker([38.9126018, -77.059799]).bindPopup('Tidal Basin Retreat').addTo(washingtons),
+  L.marker([38.8977332, -77.03653]).bindPopup('Lincoln Bedroom').addTo(washingtons),
+  L.marker([38.810551, -77.075218]).bindPopup('Cherry Blossom B&B').addTo(washingtons),
+  L.marker([38.896648, -77.025978]).bindPopup('Private Ford Theatre Balcony Suite').addTo(washingtons),
+  L.marker([38.893607, -77.014652]).bindPopup('House of Cards').addTo(washingtons),
+  L.marker([38.8955911, -77.0317614]).bindPopup('The West Wing').addTo(washingtons);
+
+var stlouis = new L.LayerGroup();
+  L.marker([38.586227, -90.383352]).bindPopup('Gateway to the West').addTo(stlouis),
+  L.marker([38.6226441, -90.1928125]).bindPopup('Wizard of Oz House').addTo(stlouis);
+
+var overlays = {
+  "Denver": denvers,
+  "New York": newyorks,
+  "Seattle": seattles,
+  "San Francisco": sanfranciscos,
+  "Washington": washingtons,
+  "St Louis": stlouis
+};
+L.control.layers(overlays).addTo(map);
+// map.fitBounds(markers.getBounds().pad(0.5));
+</script>
+<script charset="utf-8">
+$(document).ready(function(){
+  $('.leaflet-control-layers-selector').click(function(){
+    if($('.leaflet-control-layers-selector').prop('checked') === true)
+    map.setView(new L.LatLng(39.674216, -104.924942), 10)
+  })
+
+  $('.leaflet-control-layers-selector ~ span:second').click(function(){
+    if($('.leaflet-control-layers-selector ~ span:second').is(':checked') === true)
+    map.setView(new L.LatLng(42.674216, -105.924942), 10)
+  })
+});
+</script>
+
+
+<!-- L.geoJson(geojsonFeatures, {
+  filter: function(feature, layer) {
+    return feature.properties.show_on_map;
+  }
+}).addTo(map);
+
+L.geoJson(geojsonFeatures, {
+  onEachFeature: onEachFeature,
+  fitBounds: false
+}).addTo(map); -->
+
+<!-- function onEachFeature(feature, layer) {
   // does this feature have a property named popupContent?
   if (feature.properties && feature.properties.popupContent) {
     layer.bindPopup(feature.properties.popupContent);
@@ -267,8 +339,30 @@ L.geoJson(geojsonFeatures, {
   }
 }).addTo(map);
 
-// L.geoJson(geojsonFeatures, {
-//   onEachFeature: onEachFeature,
-//   fitBounds: false
-// }).addTo(map);
-</script>
+L.geoJson(geojsonFeatures, {
+  onEachFeature: onEachFeature,
+  fitBounds: false
+}).addTo(map); -->
+
+<!-- l1 = 39.674216, -104.924942
+l2 = 39.6710978, -105.107292
+l3 = 39.7934098, -104.863788
+l4 = 40.624944, -74.131798
+l5 = 40.7161323, -73.987091
+l6 = 40.7771743, -73.959137
+l7 = 47.614519, -122.326798
+l8 = 47.631634, -122.36908
+l9 = 47.5822069, -122.400668
+l10 = 37.7702676, -122.423866
+l11 = 37.7638552, -122.403458
+l12 = 37.738628, -122.47216
+l13 = 38.9149646, -77.095848
+l14 = 38.9082124, -77.045082
+l15 = 38.9126018, -77.059799
+l16 = 38.8977332, -77.03653
+l17 = 38.810551, -77.075218
+l18 = 38.896648, -77.025978
+l19 = 38.893607, -77.014652
+l20 = 38.8955911, -77.0317614
+l21 = 38.586227, -90.383352
+l22 = 38.6226441, -90.1928125 -->
