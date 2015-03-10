@@ -11,9 +11,8 @@
 <div id='map'></div>
 <script>
 L.mapbox.accessToken = '<%= Rails.application.secrets.mapbox_token %>';
-var map = L.mapbox.map('map', 'cluhring.l1b0862b')
-
-map.locate({setView: false, maxZoom: 16});
+var map = L.mapbox.map('map', 'cluhring.l1b0862b');
+map.locate({setView: true, maxZoom: 16});
 
 function onLocationFound(e) {
   var radius = e.accuracy / 2;
@@ -31,4 +30,339 @@ function onLocationError(e) {
 }
 
 map.on('locationerror', onLocationError);
+
+var denvers = new L.LayerGroup();
+  L.marker([39.674216, -104.924942]).bindPopup("Lydia's House").addTo(denvers),
+  L.marker([39.6710978, -105.107292]).bindPopup('House on Haunted Hill').addTo(denvers),
+  L.marker([39.7934098, -104.863788]).bindPopup('Denver B&B').addTo(denvers);
+  L.marker([39.7234098, -104.963788]).bindPopup('Denver Love Shack').addTo(denvers);
+  L.marker([39.68234098, -104.503788]).bindPopup('Denver Mountain Retreat').addTo(denvers);
+
+var newyorks = new L.LayerGroup();
+  L.marker([40.624944, -74.131798]).bindPopup('Brooklyn, Brookly, we go hard').addTo(newyorks),
+  L.marker([40.7161323, -73.987091]).bindPopup('Manhattan Apt').addTo(newyorks),
+  L.marker([40.7771743, -73.959137]).bindPopup('Big Apple Apt').addTo(newyorks);
+
+var seattles = new L.LayerGroup();
+  L.marker([47.614519, -122.326798]).bindPopup('Rain City, USA Condo').addTo(seattles),
+  L.marker([47.631634, -122.36908]).bindPopup('Pikes Place Market Bungalo').addTo(seattles),
+  L.marker([47.5822069, -122.400668]).bindPopup('Mt Rainier Cabin').addTo(seattles);
+
+var sanfranciscos = new L.LayerGroup();
+  L.marker([37.7702676, -122.423866]).bindPopup('Haight-Ashbury Hostel').addTo(sanfranciscos),
+  L.marker([37.7638552, -122.403458]).bindPopup('Golden Gate Escape').addTo(sanfranciscos),
+  L.marker([37.738628, -122.47216]).bindPopup('Full House').addTo(sanfranciscos);
+
+var washingtons = new L.LayerGroup();
+  L.marker([38.9149646, -77.095848]).bindPopup('Condo on the Mall').addTo(washingtons),
+  L.marker([38.9082124, -77.045082]).bindPopup('Capital Hill House').addTo(washingtons),
+  L.marker([38.9126018, -77.059799]).bindPopup('Tidal Basin Retreat').addTo(washingtons),
+  L.marker([38.8977332, -77.03653]).bindPopup('Lincoln Bedroom').addTo(washingtons),
+  L.marker([38.810551, -77.075218]).bindPopup('Cherry Blossom B&B').addTo(washingtons),
+  L.marker([38.896648, -77.025978]).bindPopup('Private Ford Theatre Balcony Suite').addTo(washingtons),
+  L.marker([38.893607, -77.014652]).bindPopup('House of Cards').addTo(washingtons),
+  L.marker([38.8955911, -77.0317614]).bindPopup('The West Wing').addTo(washingtons);
+
+var stlouis = new L.LayerGroup();
+  L.marker([38.586227, -90.383352]).bindPopup('Gateway to the West').addTo(stlouis),
+  L.marker([38.6226441, -90.1928125]).bindPopup('Wizard of Oz House').addTo(stlouis);
+
+var overlays = {
+  "Denver": denvers,
+  "New York": newyorks,
+  "Seattle": seattles,
+  "San Francisco": sanfranciscos,
+  "Washington": washingtons,
+  "St Louis": stlouis
+};
+L.control.layers(overlays).addTo(map);
+// map.fitBounds(markers.getBounds().pad(0.5));
 </script>
+<script charset="utf-8">
+$(document).ready(function(){
+  $('.leaflet-control-layers-selector').click(function(){
+    if($('.leaflet-control-layers-selector').prop('checked') === true)
+    map.setView(new L.LatLng(39.674216, -104.924942), 10)
+  })
+
+  $('.leaflet-control-layers-selector ~ span:second').click(function(){
+    if($('.leaflet-control-layers-selector ~ span:second').is(':checked') === true)
+    map.setView(new L.LatLng(42.674216, -105.924942), 10)
+  })
+});
+</script>
+
+
+<!-- L.geoJson(geojsonFeatures, {
+  filter: function(feature, layer) {
+    return feature.properties.show_on_map;
+  }
+}).addTo(map);
+
+L.geoJson(geojsonFeatures, {
+  onEachFeature: onEachFeature,
+  fitBounds: false
+}).addTo(map); -->
+
+<!-- function onEachFeature(feature, layer) {
+  // does this feature have a property named popupContent?
+  if (feature.properties && feature.properties.popupContent) {
+    layer.bindPopup(feature.properties.popupContent);
+  }
+}
+
+var geojsonFeatures = [{
+  "type": "Feature",
+  "properties": {
+    "name": "l1",
+    "popupContent": "Denver B&B"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-104.924942, 39.674216]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l2",
+    "popupContent": "Denver Love Shack"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-105.107292, 39.6710978]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l3",
+    "popupContent": "Denver Mountain Retreat"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-104.863788, 39.7934098]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l4",
+    "popupContent": "Brooklyn, Brooklyn, we go hard"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-74.131798, 40.624944]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l5",
+    "popupContent": "Manhattan Apt"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-73.987091, 40.7161323]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l6",
+    "popupContent": "Big Apple Apts"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-73.959137, 40.7771743]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l7",
+    "popupContent": "Rain City, USA Condo"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-122.326798, 47.614519]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l8",
+    "popupContent": "Pike Place Market Bungalo"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-122.36908, 47.631634]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l9",
+    "popupContent": "Mt Rainier Cabin"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-122.400668, 47.5822069]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l10",
+    "popupContent": "Haight-Ashbury Hostel"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-122.423866, 37.7702676]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l11",
+    "popupContent": "Golden Gate Escape"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-122.403458, 37.7638552]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l12",
+    "popupContent": "Full House"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-122.47216, 37.738628]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l13",
+    "popupContent": "Condo on the Mall"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.095848, 38.9149646]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l14",
+    "popupContent": "Capital Hill House"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.045082, 38.9082124]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l15",
+    "popupContent": "Lincoln Bedroom"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.059799, 38.9126018]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l16",
+    "popupContent": "Lincoln Bedroom"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.03653, 38.8977332]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l17",
+    "popupContent": "Cherry Blossom B&B"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.075218, 38.810551]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l18",
+    "popupContent": "Private Ford Theatre Balcony Suite"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.025978, 38.896648]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l19",
+    "popupContent": "House of Cards"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.014652, 38.893607]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l20",
+    "popupContent": "The West Wing"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-77.0317614, 38.8955911]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l21",
+    "popupContent": "Gateway to the West"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-90.383352, 38.586227]
+  }
+}, {
+  "type": "Feature",
+  "properties": {
+    "name": "l22",
+    "popupContent": "Wizard of Oz House"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-90.1928125, 38.6226441]
+  }
+}];
+
+L.geoJson(geojsonFeatures, {
+  filter: function(feature, layer) {
+    return feature.properties.show_on_map;
+  }
+}).addTo(map);
+
+L.geoJson(geojsonFeatures, {
+  onEachFeature: onEachFeature,
+  fitBounds: false
+}).addTo(map); -->
+
+<!-- l1 = 39.674216, -104.924942
+l2 = 39.6710978, -105.107292
+l3 = 39.7934098, -104.863788
+l4 = 40.624944, -74.131798
+l5 = 40.7161323, -73.987091
+l6 = 40.7771743, -73.959137
+l7 = 47.614519, -122.326798
+l8 = 47.631634, -122.36908
+l9 = 47.5822069, -122.400668
+l10 = 37.7702676, -122.423866
+l11 = 37.7638552, -122.403458
+l12 = 37.738628, -122.47216
+l13 = 38.9149646, -77.095848
+l14 = 38.9082124, -77.045082
+l15 = 38.9126018, -77.059799
+l16 = 38.8977332, -77.03653
+l17 = 38.810551, -77.075218
+l18 = 38.896648, -77.025978
+l19 = 38.893607, -77.014652
+l20 = 38.8955911, -77.0317614
+l21 = 38.586227, -90.383352
+l22 = 38.6226441, -90.1928125 -->
