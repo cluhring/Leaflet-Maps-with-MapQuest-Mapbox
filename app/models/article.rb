@@ -1,4 +1,9 @@
 class Article < ActiveRecord::Base
-  attr_accessible :address, :latitude, :longitude
   geocoded_by :address
+
+  private
+
+  def article_params
+    params.require(:person).permit(:address, :latitude, :longitude)
+  end
 end
